@@ -6,7 +6,19 @@ body{
     align-items: center;
 }
 section {
+    display: flex;
     font-size: 170px;
+}
+.frame {
+    border: solid 1px #292727
+}
+[contenteditable] {
+    outline: 0px solid transparent;
+}
+[contenteditable]:focus {
+   background-color: darkseagreen;
+   color: transparent;
+   text-shadow: 0 0 0 #0a0b0c;
 }
 #showTimer {
     font-size: 25px;
@@ -39,6 +51,6 @@ button:disabled {
     color: #DFDFDF;
     border: solid 1px #DFDFDF
 }
-.active {
-    background-color: red;
-}
+/* .edit-active {
+    background-color: darkseagreen;
+} */

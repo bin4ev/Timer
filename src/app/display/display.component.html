@@ -1,0 +1,8 @@
+<section [class.frame]="editable" (keydown)="keydown($event, s.textContent, m.textContent, h.textContent)">
+    <span class="display" [contentEditable]="editable" #h [textContent]="hours"></span>
+    <span class="display">:</span>
+    <span class="display" [contentEditable]="editable" #m [textContent]="min"></span>
+    <span class="display">:</span>
+    <span class="display" onfocus [contentEditable]="editable" #s [textContent]="sec">
+    </span>
+</section>
