@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
+enum TimePart { sec = 1, min = 3, hours = 5 }
+
 @Component({
   selector: 'app-display',
   templateUrl: './display.component.html',
@@ -12,8 +14,8 @@ export class DisplayComponent {
   @Input() min: any = ''
   @Input() hours: any = ''
   @Input() editable: boolean = false
- 
-  prevDisplayData: any = {}
+
+  prevDisplayData: any = undefined
   savedKeys = ''
 
   constructor() { }
@@ -40,23 +42,44 @@ export class DisplayComponent {
       return
     }
 
-    if (!this.prevDisplayData.hasOwnProperty('sec')) {
+    if (!this.prevDisplayData) {
       let { sec, min, hours } = this
       this.prevDisplayData = { sec, min, hours }
     }
 
-    let arr = [[0,0],[0,0],[0,0]]
     this.savedKeys += e.key
-    let { firstDig, secDig } = this.getPosition(1)
-    this.sec = this.setDigits(firstDig, secDig)
+    this.checkTargetId(e.target)
+  }
+
+  checkTargetId(target: any): void {
+    switch (target.id) {
+      case 'seconds':
+        this.startEdit()
+        break;
+      case 'minutes':
+        this.min = this.getTimePart(1)
+        break
+      case 'hours':
+        this.hours = this.getTimePart(1)
+        break
+      default:
+        break;
+    }
+  }
+
+  startEdit(): void {
+    this.sec = this.getTimePart(TimePart.sec)
     if (this.savedKeys.length > 2) {
-      let { firstDig, secDig } = this.getPosition(3)
-      this.min = this.setDigits(firstDig, secDig)
+      this.min = this.getTimePart(TimePart.min)
     }
     if (this.savedKeys.length > 4) {
-      let { firstDig, secDig } = this.getPosition(5)
-      this.hours = this.setDigits(firstDig, secDig)
+      this.hours = this.getTimePart(TimePart.hours)
     }
+  }
+
+  getTimePart(pos: TimePart) {
+    let { firstDig, secDig } = this.getPosition(pos)
+    return this.setDigits(firstDig, secDig)
   }
 
   private getPosition(index: number): any {
